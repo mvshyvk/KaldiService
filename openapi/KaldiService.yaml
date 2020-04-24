@@ -1,0 +1,171 @@
+openapi: 3.0.0
+info:
+  title: Kaldi speach recognition REST API
+  description: Simple REST interface for posting tasks for non realtime speach recognition
+  version: 0.9.0
+servers:
+- url: https://virtserver.swaggerhub.com/mvshyvk/Kaldi_Speach_Recognition/0.9.0
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: Service
+  description: Service operations
+- name: Task
+  description: Task operations
+paths:
+  /serviceStatus:
+    get:
+      tags:
+      - Service
+      description: Returns status of Kaldi speach recognition service
+      responses:
+        "200":
+          description: Status of Kaldi speach recognition service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceStatus'
+        "401":
+          description: Unauthorized
+      security:
+      - password:
+        - read
+  /task:
+    post:
+      tags:
+      - Task
+      description: Adds a task for speach recognition into processing queue
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              description: Wave file to process
+              format: binary
+      responses:
+        "202":
+          description: Task added to processing queue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskId'
+        "401":
+          description: Unauthorized
+        "429":
+          description: Processing queue is full
+      security:
+      - password:
+        - write
+  /task/{taskId}/status:
+    get:
+      tags:
+      - Task
+      description: Retrieves task execution status
+      parameters:
+      - name: taskId
+        in: path
+        description: Task Id to retrieve task execution status
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: h6Js2Lpd7
+      responses:
+        "200":
+          description: Task has been completed, results are available in response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+        "204":
+          description: Task is not processed yet
+        "401":
+          description: Unauthorized
+      security:
+      - password:
+        - read
+components:
+  schemas:
+    Segment:
+      required:
+      - segmentText
+      - timeStart
+      type: object
+      properties:
+        timeStart:
+          title: Timestamp of segment start
+          type: string
+          format: date-time
+          example: 2020-03-21T15:01:08+02:00
+        timeEnd:
+          title: Timestamp of segment end
+          type: string
+          format: date-time
+          example: 2020-03-21T15:01:12+02:00
+        segmentText:
+          title: Segment of recognized speech
+          type: string
+          example: from a wave file
+    Result:
+      required:
+      - status
+      - taskId
+      - text
+      type: object
+      properties:
+        taskId:
+          title: Id of completed task
+          type: string
+          example: h6Js2Lpd7
+        status:
+          title: Status of completed task
+          type: string
+          example: Done
+          enum:
+          - Done
+          - Canceled
+        text:
+          title: Recognized speech
+          type: string
+          example: This is some recognized text from a wave file
+        textChunks:
+          title: Array of segments of recognized speech
+          type: array
+          items:
+            $ref: '#/components/schemas/Segment'
+    TaskId:
+      required:
+      - taskId
+      type: object
+      properties:
+        taskId:
+          title: Id of task added to processing queue
+          type: string
+          example: h6Js2Lpd7
+    ServiceStatus:
+      type: object
+      properties:
+        workersCount:
+          title: Count of speach recognition worker processors
+          type: integer
+          example: 8
+        queueDepth:
+          title: Depth of processing queue
+          type: integer
+          example: 32
+        availableQueueSlots:
+          title: Count of queue slots available for posting a task
+          type: integer
+          example: 27
+  responses:
+    "401Unauthorized":
+      description: Unauthorized
+  securitySchemes:
+    password:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: http://example.com/oauth/token
+          scopes:
+            write: allows modifying resources
+            read: allows reading resources
