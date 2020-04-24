@@ -1,36 +1,24 @@
 package com.mvshyvk.kaldi.service.api;
 
-import com.mvshyvk.kaldi.service.models.*;
 import com.mvshyvk.kaldi.service.api.ServiceStatusApiService;
 import com.mvshyvk.kaldi.service.api.factories.ServiceStatusApiServiceFactory;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import com.mvshyvk.kaldi.service.models.ServiceStatus;
 
-import java.util.Map;
-import java.util.List;
 import com.mvshyvk.kaldi.service.api.NotFoundException;
-
-import java.io.InputStream;
-
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import javax.servlet.ServletConfig;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.*;
-import javax.validation.constraints.*;
 
 
 @Path("/serviceStatus")
