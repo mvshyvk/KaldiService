@@ -20,67 +20,67 @@ import javax.validation.constraints.*;
 /**
  * TaskId
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-04-23T21:31:33.644Z[GMT]")public class TaskId   {
-  @JsonProperty("taskId")
-  private String taskId = null;
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-04-23T21:31:33.644Z[GMT]")
+public class TaskId {
+	@JsonProperty("taskId")
+	private String taskId = null;
 
-  public TaskId taskId(String taskId) {
-    this.taskId = taskId;
-    return this;
-  }
+	public TaskId taskId(String taskId) {
+		this.taskId = taskId;
+		return this;
+	}
 
-  /**
-   * Get taskId
-   * @return taskId
-   **/
-  @JsonProperty("taskId")
-  @Schema(example = "h6Js2Lpd7", required = true, description = "")
-  @NotNull
-  public String getTaskId() {
-    return taskId;
-  }
+	/**
+	 * Get taskId
+	 * 
+	 * @return taskId
+	 **/
+	@JsonProperty("taskId")
+	@Schema(example = "h6Js2Lpd7", required = true, description = "")
+	@NotNull
+	public String getTaskId() {
+		return taskId;
+	}
 
-  public void setTaskId(String taskId) {
-    this.taskId = taskId;
-  }
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
+	}
 
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		TaskId taskId = (TaskId) o;
+		return Objects.equals(this.taskId, taskId.taskId);
+	}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    TaskId taskId = (TaskId) o;
-    return Objects.equals(this.taskId, taskId.taskId);
-  }
+	@Override
+	public int hashCode() {
+		return Objects.hash(taskId);
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(taskId);
-  }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class TaskId {\n");
 
+		sb.append("    taskId: ").append(toIndentedString(taskId)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class TaskId {\n");
-    
-    sb.append("    taskId: ").append(toIndentedString(taskId)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }

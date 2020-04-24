@@ -19,114 +19,116 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * ServiceStatus
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-04-23T21:31:33.644Z[GMT]")public class ServiceStatus   {
-  @JsonProperty("workersCount")
-  private Integer workersCount = null;
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-04-23T21:31:33.644Z[GMT]")
+public class ServiceStatus {
+	@JsonProperty("workersCount")
+	private Integer workersCount = null;
 
-  @JsonProperty("queueDepth")
-  private Integer queueDepth = null;
+	@JsonProperty("queueDepth")
+	private Integer queueDepth = null;
 
-  @JsonProperty("availableQueueSlots")
-  private Integer availableQueueSlots = null;
+	@JsonProperty("availableQueueSlots")
+	private Integer availableQueueSlots = null;
 
-  public ServiceStatus workersCount(Integer workersCount) {
-    this.workersCount = workersCount;
-    return this;
-  }
+	public ServiceStatus workersCount(Integer workersCount) {
+		this.workersCount = workersCount;
+		return this;
+	}
 
-  /**
-   * Get workersCount
-   * @return workersCount
-   **/
-  @JsonProperty("workersCount")
-  @Schema(example = "8", description = "")
-  public Integer getWorkersCount() {
-    return workersCount;
-  }
+	/**
+	 * Get workersCount
+	 * 
+	 * @return workersCount
+	 **/
+	@JsonProperty("workersCount")
+	@Schema(example = "8", description = "")
+	public Integer getWorkersCount() {
+		return workersCount;
+	}
 
-  public void setWorkersCount(Integer workersCount) {
-    this.workersCount = workersCount;
-  }
+	public void setWorkersCount(Integer workersCount) {
+		this.workersCount = workersCount;
+	}
 
-  public ServiceStatus queueDepth(Integer queueDepth) {
-    this.queueDepth = queueDepth;
-    return this;
-  }
+	public ServiceStatus queueDepth(Integer queueDepth) {
+		this.queueDepth = queueDepth;
+		return this;
+	}
 
-  /**
-   * Get queueDepth
-   * @return queueDepth
-   **/
-  @JsonProperty("queueDepth")
-  @Schema(example = "32", description = "")
-  public Integer getQueueDepth() {
-    return queueDepth;
-  }
+	/**
+	 * Get queueDepth
+	 * 
+	 * @return queueDepth
+	 **/
+	@JsonProperty("queueDepth")
+	@Schema(example = "32", description = "")
+	public Integer getQueueDepth() {
+		return queueDepth;
+	}
 
-  public void setQueueDepth(Integer queueDepth) {
-    this.queueDepth = queueDepth;
-  }
+	public void setQueueDepth(Integer queueDepth) {
+		this.queueDepth = queueDepth;
+	}
 
-  public ServiceStatus availableQueueSlots(Integer availableQueueSlots) {
-    this.availableQueueSlots = availableQueueSlots;
-    return this;
-  }
+	public ServiceStatus availableQueueSlots(Integer availableQueueSlots) {
+		this.availableQueueSlots = availableQueueSlots;
+		return this;
+	}
 
-  /**
-   * Get availableQueueSlots
-   * @return availableQueueSlots
-   **/
-  @JsonProperty("availableQueueSlots")
-  @Schema(example = "27", description = "")
-  public Integer getAvailableQueueSlots() {
-    return availableQueueSlots;
-  }
+	/**
+	 * Get availableQueueSlots
+	 * 
+	 * @return availableQueueSlots
+	 **/
+	@JsonProperty("availableQueueSlots")
+	@Schema(example = "27", description = "")
+	public Integer getAvailableQueueSlots() {
+		return availableQueueSlots;
+	}
 
-  public void setAvailableQueueSlots(Integer availableQueueSlots) {
-    this.availableQueueSlots = availableQueueSlots;
-  }
+	public void setAvailableQueueSlots(Integer availableQueueSlots) {
+		this.availableQueueSlots = availableQueueSlots;
+	}
 
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		ServiceStatus serviceStatus = (ServiceStatus) o;
+		return Objects.equals(this.workersCount, serviceStatus.workersCount)
+				&& Objects.equals(this.queueDepth, serviceStatus.queueDepth)
+				&& Objects.equals(this.availableQueueSlots, serviceStatus.availableQueueSlots);
+	}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    ServiceStatus serviceStatus = (ServiceStatus) o;
-    return Objects.equals(this.workersCount, serviceStatus.workersCount) &&
-        Objects.equals(this.queueDepth, serviceStatus.queueDepth) &&
-        Objects.equals(this.availableQueueSlots, serviceStatus.availableQueueSlots);
-  }
+	@Override
+	public int hashCode() {
+		return Objects.hash(workersCount, queueDepth, availableQueueSlots);
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(workersCount, queueDepth, availableQueueSlots);
-  }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class ServiceStatus {\n");
 
+		sb.append("    workersCount: ").append(toIndentedString(workersCount)).append("\n");
+		sb.append("    queueDepth: ").append(toIndentedString(queueDepth)).append("\n");
+		sb.append("    availableQueueSlots: ").append(toIndentedString(availableQueueSlots)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class ServiceStatus {\n");
-    
-    sb.append("    workersCount: ").append(toIndentedString(workersCount)).append("\n");
-    sb.append("    queueDepth: ").append(toIndentedString(queueDepth)).append("\n");
-    sb.append("    availableQueueSlots: ").append(toIndentedString(availableQueueSlots)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }

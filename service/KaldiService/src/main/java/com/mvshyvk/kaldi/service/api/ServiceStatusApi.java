@@ -20,47 +20,43 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.*;
 
-
 @Path("/serviceStatus")
 
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-04-23T21:31:33.644Z[GMT]")
+public class ServiceStatusApi {
+	private final ServiceStatusApiService delegate;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-04-23T21:31:33.644Z[GMT]")public class ServiceStatusApi  {
-   private final ServiceStatusApiService delegate;
+	public ServiceStatusApi(@Context ServletConfig servletContext) {
+		ServiceStatusApiService delegate = null;
 
-   public ServiceStatusApi(@Context ServletConfig servletContext) {
-      ServiceStatusApiService delegate = null;
+		if (servletContext != null) {
+			String implClass = servletContext.getInitParameter("ServiceStatusApi.implementation");
+			if (implClass != null && !"".equals(implClass.trim())) {
+				try {
+					delegate = (ServiceStatusApiService) Class.forName(implClass).newInstance();
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
 
-      if (servletContext != null) {
-         String implClass = servletContext.getInitParameter("ServiceStatusApi.implementation");
-         if (implClass != null && !"".equals(implClass.trim())) {
-            try {
-               delegate = (ServiceStatusApiService) Class.forName(implClass).newInstance();
-            } catch (Exception e) {
-               throw new RuntimeException(e);
-            }
-         } 
-      }
+		if (delegate == null) {
+			delegate = ServiceStatusApiServiceFactory.getServiceStatusApi();
+		}
 
-      if (delegate == null) {
-         delegate = ServiceStatusApiServiceFactory.getServiceStatusApi();
-      }
+		this.delegate = delegate;
+	}
 
-      this.delegate = delegate;
-   }
+	@GET
 
-    @GET
-    
-    
-    @Produces({ "application/json" })
-    @Operation(summary = "", description = "Returns status of Kaldi speach recognition service", security = {
-        @SecurityRequirement(name = "password", scopes = {
-            ""        })    }, tags={ "Service" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "Status of Kaldi speach recognition service", content = @Content(schema = @Schema(implementation = ServiceStatus.class))),
-        
-        @ApiResponse(responseCode = "401", description = "Unauthorized") })
-    public Response serviceStatusGet(@Context SecurityContext securityContext)
-    throws NotFoundException {
-        return delegate.serviceStatusGet(securityContext);
-    }
+	@Produces({ "application/json" })
+	@Operation(summary = "", description = "Returns status of Kaldi speach recognition service", security = {
+			@SecurityRequirement(name = "password", scopes = { "" }) }, tags = { "Service" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Status of Kaldi speach recognition service", content = @Content(schema = @Schema(implementation = ServiceStatus.class))),
+
+			@ApiResponse(responseCode = "401", description = "Unauthorized") })
+	public Response serviceStatusGet(@Context SecurityContext securityContext) throws NotFoundException {
+		return delegate.serviceStatusGet(securityContext);
+	}
 }

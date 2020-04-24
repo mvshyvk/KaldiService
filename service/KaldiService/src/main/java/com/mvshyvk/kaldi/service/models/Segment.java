@@ -21,116 +21,117 @@ import javax.validation.constraints.*;
 /**
  * Segment
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-04-23T21:31:33.644Z[GMT]")public class Segment   {
-  @JsonProperty("timeStart")
-  private OffsetDateTime timeStart = null;
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-04-23T21:31:33.644Z[GMT]")
+public class Segment {
+	@JsonProperty("timeStart")
+	private OffsetDateTime timeStart = null;
 
-  @JsonProperty("timeEnd")
-  private OffsetDateTime timeEnd = null;
+	@JsonProperty("timeEnd")
+	private OffsetDateTime timeEnd = null;
 
-  @JsonProperty("segmentText")
-  private String segmentText = null;
+	@JsonProperty("segmentText")
+	private String segmentText = null;
 
-  public Segment timeStart(OffsetDateTime timeStart) {
-    this.timeStart = timeStart;
-    return this;
-  }
+	public Segment timeStart(OffsetDateTime timeStart) {
+		this.timeStart = timeStart;
+		return this;
+	}
 
-  /**
-   * Get timeStart
-   * @return timeStart
-   **/
-  @JsonProperty("timeStart")
-  @Schema(example = "2020-03-21T15:01:08+02:00", required = true, description = "")
-  @NotNull
-  public OffsetDateTime getTimeStart() {
-    return timeStart;
-  }
+	/**
+	 * Get timeStart
+	 * 
+	 * @return timeStart
+	 **/
+	@JsonProperty("timeStart")
+	@Schema(example = "2020-03-21T15:01:08+02:00", required = true, description = "")
+	@NotNull
+	public OffsetDateTime getTimeStart() {
+		return timeStart;
+	}
 
-  public void setTimeStart(OffsetDateTime timeStart) {
-    this.timeStart = timeStart;
-  }
+	public void setTimeStart(OffsetDateTime timeStart) {
+		this.timeStart = timeStart;
+	}
 
-  public Segment timeEnd(OffsetDateTime timeEnd) {
-    this.timeEnd = timeEnd;
-    return this;
-  }
+	public Segment timeEnd(OffsetDateTime timeEnd) {
+		this.timeEnd = timeEnd;
+		return this;
+	}
 
-  /**
-   * Get timeEnd
-   * @return timeEnd
-   **/
-  @JsonProperty("timeEnd")
-  @Schema(example = "2020-03-21T15:01:12+02:00", description = "")
-  public OffsetDateTime getTimeEnd() {
-    return timeEnd;
-  }
+	/**
+	 * Get timeEnd
+	 * 
+	 * @return timeEnd
+	 **/
+	@JsonProperty("timeEnd")
+	@Schema(example = "2020-03-21T15:01:12+02:00", description = "")
+	public OffsetDateTime getTimeEnd() {
+		return timeEnd;
+	}
 
-  public void setTimeEnd(OffsetDateTime timeEnd) {
-    this.timeEnd = timeEnd;
-  }
+	public void setTimeEnd(OffsetDateTime timeEnd) {
+		this.timeEnd = timeEnd;
+	}
 
-  public Segment segmentText(String segmentText) {
-    this.segmentText = segmentText;
-    return this;
-  }
+	public Segment segmentText(String segmentText) {
+		this.segmentText = segmentText;
+		return this;
+	}
 
-  /**
-   * Get segmentText
-   * @return segmentText
-   **/
-  @JsonProperty("segmentText")
-  @Schema(example = "from a wave file", required = true, description = "")
-  @NotNull
-  public String getSegmentText() {
-    return segmentText;
-  }
+	/**
+	 * Get segmentText
+	 * 
+	 * @return segmentText
+	 **/
+	@JsonProperty("segmentText")
+	@Schema(example = "from a wave file", required = true, description = "")
+	@NotNull
+	public String getSegmentText() {
+		return segmentText;
+	}
 
-  public void setSegmentText(String segmentText) {
-    this.segmentText = segmentText;
-  }
+	public void setSegmentText(String segmentText) {
+		this.segmentText = segmentText;
+	}
 
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Segment segment = (Segment) o;
+		return Objects.equals(this.timeStart, segment.timeStart) && Objects.equals(this.timeEnd, segment.timeEnd)
+				&& Objects.equals(this.segmentText, segment.segmentText);
+	}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Segment segment = (Segment) o;
-    return Objects.equals(this.timeStart, segment.timeStart) &&
-        Objects.equals(this.timeEnd, segment.timeEnd) &&
-        Objects.equals(this.segmentText, segment.segmentText);
-  }
+	@Override
+	public int hashCode() {
+		return Objects.hash(timeStart, timeEnd, segmentText);
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(timeStart, timeEnd, segmentText);
-  }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class Segment {\n");
 
+		sb.append("    timeStart: ").append(toIndentedString(timeStart)).append("\n");
+		sb.append("    timeEnd: ").append(toIndentedString(timeEnd)).append("\n");
+		sb.append("    segmentText: ").append(toIndentedString(segmentText)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class Segment {\n");
-    
-    sb.append("    timeStart: ").append(toIndentedString(timeStart)).append("\n");
-    sb.append("    timeEnd: ").append(toIndentedString(timeEnd)).append("\n");
-    sb.append("    segmentText: ").append(toIndentedString(segmentText)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }
