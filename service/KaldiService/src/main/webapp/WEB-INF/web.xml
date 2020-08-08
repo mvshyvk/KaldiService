@@ -28,6 +28,12 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     
+    <listener>
+    	<listener-class>
+    		com.mvshyvk.kaldi.service.webapp.KaldiServiceAppContext
+    	</listener-class>
+    </listener>
+    
     
     <servlet-mapping>
         <servlet-name>jersey</servlet-name>
