@@ -29,6 +29,15 @@ public class ServiceStatus {
 
 	@JsonProperty("availableQueueSlots")
 	private Integer availableQueueSlots = null;
+	
+	public ServiceStatus() { }
+	
+	public ServiceStatus(ServiceStatus origin) {
+		
+		workersCount = origin.workersCount;
+		queueDepth = origin.queueDepth;
+		availableQueueSlots = origin.availableQueueSlots;
+	}
 
 	public ServiceStatus workersCount(Integer workersCount) {
 		this.workersCount = workersCount;

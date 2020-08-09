@@ -1,6 +1,7 @@
 package com.mvshyvk.kaldi.service.webapp.status;
 
 import com.mvshyvk.kaldi.service.models.ServiceStatus;
+import com.mvshyvk.kaldi.service.webapp.task.TaskHandler;
 
 /**
  * Class that handles service capacities and current status
@@ -8,15 +9,19 @@ import com.mvshyvk.kaldi.service.models.ServiceStatus;
 public class ServiceStatusHandler {
 	
 	private ServiceStatus serviceStatus;
+	private TaskHandler taskHandler;
 	
-	public ServiceStatusHandler() {
+	public ServiceStatusHandler(TaskHandler taskHandler) {
 		
+		this.taskHandler = taskHandler;
 		serviceStatus = retrieveServiceStatus();
 	}
 	
 	public ServiceStatus getServiceStatus() {
 		
-		return serviceStatus;
+		ServiceStatus status = new ServiceStatus(serviceStatus);
+		status.setAvailableQueueSlots(taskHandler.getQueueAvailableCapacity());
+		return status;
 	}
 	
 	private ServiceStatus retrieveServiceStatus() {
@@ -33,9 +38,8 @@ public class ServiceStatusHandler {
 		return status;
 	}
 
-	private int calculateQueueDepth(int workersCount) {
-		// TODO: Improve algorithm of queue depth calculation
-		return 4 + workersCount * 4;
+	private int calculateQueueDepth(int workersCount) {		
+		return taskHandler.getQueueCapacity();
 	}
 
 	private int loadWorkersCount() {
