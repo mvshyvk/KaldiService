@@ -60,13 +60,12 @@ public class TaskApi {
 			@SecurityRequirement(name = "password", scopes = { "" }) }, tags = { "Task" })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "202", description = "Task added to processing queue", content = @Content(schema = @Schema(implementation = TaskId.class))),
-
+			@ApiResponse(responseCode = "400", description = "Bad request"),
 			@ApiResponse(responseCode = "401", description = "Unauthorized"),
-
 			@ApiResponse(responseCode = "429", description = "Processing queue is full") })
-	public Response taskPost(@Parameter(in = ParameterIn.DEFAULT, description = "") InputStream inputStream
-
-			, @Context SecurityContext securityContext) throws NotFoundException {
+	public Response taskPost(
+			@Parameter(in = ParameterIn.DEFAULT, description = "") InputStream inputStream, 
+			@Context SecurityContext securityContext) throws NotFoundException {
 		return delegate.taskPost(inputStream, securityContext);
 	}
 
@@ -78,12 +77,11 @@ public class TaskApi {
 			@SecurityRequirement(name = "password", scopes = { "" }) }, tags = { "Task" })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Task has been completed, results are available in response", content = @Content(schema = @Schema(implementation = Result.class))),
-
 			@ApiResponse(responseCode = "204", description = "Task is not processed yet"),
-
 			@ApiResponse(responseCode = "401", description = "Unauthorized") })
 	public Response taskTaskIdStatusGet(
-			@Parameter(in = ParameterIn.PATH, description = "Task Id to retrieve task execution status", required = true) @PathParam("taskId") String taskId,
+			@Parameter(in = ParameterIn.PATH, description = "Task Id to retrieve task execution status", required = true) 
+			@PathParam("taskId") String taskId,
 			@Context SecurityContext securityContext) throws NotFoundException {
 		return delegate.taskTaskIdStatusGet(taskId, securityContext);
 	}

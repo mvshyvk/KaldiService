@@ -24,9 +24,9 @@ public class TaskHandler {
 	}
 	
 	// TODO: Update signature of the method
-	public TaskId postTask() throws ProcessingQueueFull {
+	public TaskId postTask(byte[] data) throws ProcessingQueueFull {
 		
-		TaskData task = new TaskData();
+		TaskData task = new TaskData(data);
 		
 		if (processingQueue.offer(task)) {
 			return new TaskId().taskId(task.getTaskId());

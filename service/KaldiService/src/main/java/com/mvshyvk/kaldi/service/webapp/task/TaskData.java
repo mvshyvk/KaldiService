@@ -7,9 +7,12 @@ import java.util.UUID;
 public class TaskData {
 	
 	private String taskId;
+	private byte[] waveData;
 	
-	public TaskData() {		
+	public TaskData(byte[] data) {
+		
 		taskId = generateTaskId();
+		waveData = data;
 	}
 	
 	public String getTaskId() {

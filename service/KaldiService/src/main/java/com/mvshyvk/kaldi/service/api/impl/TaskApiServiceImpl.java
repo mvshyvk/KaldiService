@@ -6,23 +6,57 @@ import com.mvshyvk.kaldi.service.models.TaskId;
 import com.mvshyvk.kaldi.service.webapp.KaldiServiceAppContext;
 import com.mvshyvk.kaldi.service.webapp.exception.ProcessingQueueFull;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-04-23T21:31:33.644Z[GMT]")
 public class TaskApiServiceImpl extends TaskApiService {
+	
 	@Override
-	public Response taskPost(Object body, SecurityContext securityContext) throws NotFoundException {
+	public Response taskPost(InputStream inputStream, SecurityContext securityContext) throws NotFoundException {
 		
-		TaskId taskId = null;
-		try {
-			taskId = KaldiServiceAppContext.taskHandler.postTask();
-		} catch (ProcessingQueueFull e) {
+		if (inputStream != null) {
 			
-			return Response.status(Status.TOO_MANY_REQUESTS).build();
+			TaskId taskId = null;
+			try {
+				byte[] data = readData(inputStream);
+				taskId = KaldiServiceAppContext.taskHandler.postTask(data);
+			} catch (ProcessingQueueFull e) {
+				
+				return Response.status(Status.TOO_MANY_REQUESTS).build();
+			}
+			catch (IOException e) {
+				
+				return Response.status(Status.BAD_REQUEST).build();
+			}
+			
+			return Response.accepted().entity(taskId).build();
 		}
-		return Response.accepted().entity(taskId).build();
+		// TODO: Add BAD_REQUEST (400) to YAML and description
+		return Response.status(Status.BAD_REQUEST).build();
+	}
+
+	/**
+	 * Reads data from input stream to byte array
+	 * 
+	 * @throws IOException
+	 */
+	private byte[] readData(InputStream inputStream) throws IOException {
+		
+		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+		
+		byte[] bufferChunk = new byte[1024];
+		int readBytes;
+		
+		while((readBytes = inputStream.read(bufferChunk)) > 0) {
+			byteStream.write(bufferChunk, 0, readBytes);
+		}
+		
+		return byteStream.toByteArray();
 	}
 
 	@Override
