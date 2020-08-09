@@ -1,18 +1,32 @@
 package com.mvshyvk.kaldi.service.webapp.task;
 
 import java.nio.ByteBuffer;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.UUID;
+
+import com.mvshyvk.kaldi.service.models.Segment;
 
 public class TaskData {
 	
 	private String taskId;
 	private byte[] waveData;
 	
+	private String recognizedText;
+	private List<Segment> recognizedTextChunks;
+	
 	public TaskData(byte[] data) {
 		
 		taskId = generateTaskId();
 		waveData = data;
+		
+		// TODO: Hard-coded values just for testing
+		recognizedText = "Some text";
+		recognizedTextChunks = new ArrayList<Segment>();
+		recognizedTextChunks.add(new Segment().segmentText("Some").timeStart(OffsetDateTime.now()).timeEnd(OffsetDateTime.now().plusSeconds(1)));
+		recognizedTextChunks.add(new Segment().segmentText("text").timeStart(OffsetDateTime.now().plusSeconds(1)).timeEnd(OffsetDateTime.now().plusSeconds(2)));
 	}
 	
 	public String getTaskId() {
@@ -39,5 +53,13 @@ public class TaskData {
 		bb.putLong(uuid.getMostSignificantBits());
 		bb.putLong(uuid.getLeastSignificantBits());
 		return Base64.getEncoder().encodeToString(bb.array());
+	}
+
+	public String getText() {
+		return recognizedText;
+	}
+
+	public List<Segment> getTextChunks() {
+		return recognizedTextChunks;
 	}
 }

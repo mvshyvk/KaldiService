@@ -42,5 +42,28 @@ public class TaskHandler {
 	public int getQueueAvailableCapacity() {
 		return processingQueue.remainingCapacity();
 	}
+	
+	/**
+	 * Returns task status
+	 * 
+	 * @param taskId identifier of task to retrieve status
+	 * @return status of task
+	 */
+	public TaskStatus getTaskStatus(TaskId taskId) {
+		
+		if (processingQueue.stream().anyMatch(item -> item.getTaskId().equals(taskId.getTaskId()))) {
+			return TaskStatus.enInQueue;
+		}
+		
+		if (completedTasks.containsKey(taskId.getTaskId())) {
+			return TaskStatus.enCompleted;
+		}
+		
+		return TaskStatus.enUnknown;		
+	}
+
+	public TaskData getTaskData(TaskId taskId) {		
+		return completedTasks.get(taskId.getTaskId());
+	}
 
 }

@@ -2,9 +2,13 @@ package com.mvshyvk.kaldi.service.api.impl;
 
 import com.mvshyvk.kaldi.service.api.*;
 import com.mvshyvk.kaldi.service.api.NotFoundException;
+import com.mvshyvk.kaldi.service.models.Result;
+import com.mvshyvk.kaldi.service.models.Result.StatusEnum;
 import com.mvshyvk.kaldi.service.models.TaskId;
 import com.mvshyvk.kaldi.service.webapp.KaldiServiceAppContext;
 import com.mvshyvk.kaldi.service.webapp.exception.ProcessingQueueFull;
+import com.mvshyvk.kaldi.service.webapp.task.TaskData;
+import com.mvshyvk.kaldi.service.webapp.task.TaskStatus;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -61,7 +65,25 @@ public class TaskApiServiceImpl extends TaskApiService {
 
 	@Override
 	public Response taskTaskIdStatusGet(String taskId, SecurityContext securityContext) throws NotFoundException {
-		// do some magic!
-		return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+		
+		TaskStatus status = KaldiServiceAppContext.taskHandler.getTaskStatus(new TaskId().taskId(taskId));
+		
+		if (status == TaskStatus.enInQueue) {
+			return Response.noContent().build();
+		}
+		else if (status == TaskStatus.enCompleted) {
+			
+			TaskData taskData = KaldiServiceAppContext.taskHandler.getTaskData(new TaskId().taskId(taskId));
+			
+			Result result = new Result();
+			result.setStatus(StatusEnum.DONE);
+			result.setTaskId(taskId);
+			result.setText(taskData.getText());
+			result.setTextChunks(taskData.getTextChunks());
+			
+			return Response.ok().entity(result).build();
+		}
+		
+		return Response.status(Status.NOT_FOUND).build();
 	}
 }
