@@ -68,7 +68,7 @@ public class TaskApiServiceImpl extends TaskApiService {
 		
 		TaskStatus status = KaldiServiceAppContext.taskHandler.getTaskStatus(new TaskId().taskId(taskId));
 		
-		if (status == TaskStatus.enInQueue) {
+		if (status == TaskStatus.enInQueue || status == TaskStatus.enInProgress) {
 			return Response.noContent().build();
 		}
 		else if (status == TaskStatus.enCompleted) {

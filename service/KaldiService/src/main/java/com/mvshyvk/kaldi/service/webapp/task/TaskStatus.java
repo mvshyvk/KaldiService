@@ -11,6 +11,9 @@ public enum TaskStatus {
 	/* Task is in queue */
 	enInQueue,
 	
+	/* Task is in a progress */
+	enInProgress,
+	
 	/* Task is completed */
 	enCompleted	
 }
