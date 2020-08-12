@@ -28,24 +28,19 @@ public class ServiceStatusHandler {
 		
 		ServiceStatus status = new ServiceStatus();
 		
-		int workersCount = loadWorkersCount();
-		status.setWorkersCount(workersCount);
-		
-		int queueDepth = calculateQueueDepth(workersCount);
-		status.setQueueDepth(queueDepth);
-		status.setAvailableQueueSlots(queueDepth);
+		status.setWorkersCount(getWorkersCount());
+		status.setQueueDepth(getQueueDepth());
+		status.setAvailableQueueSlots(getQueueDepth());
 		
 		return status;
 	}
 
-	private int calculateQueueDepth(int workersCount) {		
+	private int getQueueDepth() {
 		return taskHandler.getQueueCapacity();
 	}
 
-	private int loadWorkersCount() {
-		// TODO: Need to load count of available workers
-		// Currently hard-coded
-		return 1;
+	private int getWorkersCount() {
+		return taskHandler.getWorkersCount();
 	}
 
 }
