@@ -32,8 +32,25 @@ public class TaskData {
 	public String getTaskId() {
 		return taskId;
 	}
+	
+	public byte[] getWaveData() {
+		return waveData;
+	}
 
-	static private String generateTaskId() {
+	public String getText() {
+		return recognizedText;
+	}
+
+	public List<Segment> getTextChunks() {
+		return recognizedTextChunks;
+	}
+
+	public void minimizeMemoryAllocation() {
+		waveData = null;
+	}
+
+	// TODO: Extract as a utility class 
+	private static String generateTaskId() {
 		
 		UUID uuid = UUID.randomUUID();
 		String taskId = uuidToBase64(uuid).substring(0, 22);
@@ -55,11 +72,4 @@ public class TaskData {
 		return Base64.getEncoder().encodeToString(bb.array());
 	}
 
-	public String getText() {
-		return recognizedText;
-	}
-
-	public List<Segment> getTextChunks() {
-		return recognizedTextChunks;
-	}
 }
