@@ -5,8 +5,11 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.log4j.Logger;
 
-import com.mvshyvk.kaldi.service.webapp.status.ServiceStatusHandler;
-import com.mvshyvk.kaldi.service.webapp.task.TaskHandler;
+import com.mvshyvk.kaldi.service.webapp.status.ServiceStatusProvider;
+import com.mvshyvk.kaldi.service.webapp.status.ServiceStatusProviderImpl;
+import com.mvshyvk.kaldi.service.webapp.task.CapacitiesService;
+import com.mvshyvk.kaldi.service.webapp.task.TaskHandlerService;
+import com.mvshyvk.kaldi.service.webapp.task.TaskHandlerServiceImpl;
 
 /**
  * Starting point of webapp context initialization
@@ -15,16 +18,17 @@ public class KaldiServiceAppContext implements ServletContextListener {
 	
 	public static Logger log = Logger.getLogger(KaldiServiceAppContext.class);
 
-	public static ServiceStatusHandler serviceStatusHandler;
-	public static TaskHandler taskHandler;
+	public static ServiceStatusProvider statusProvider;
+	public static TaskHandlerService taskHandlerService;
 	
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		
 		log.info("Starting KaldiService ...");
 
-		taskHandler = new TaskHandler();
-		serviceStatusHandler = new ServiceStatusHandler(taskHandler);
+		// TODO: Introduce factory
+		taskHandlerService = new TaskHandlerServiceImpl();
+		statusProvider = new ServiceStatusProviderImpl((CapacitiesService)taskHandlerService);
 		
 		log.info("KaldiService started");
 	}
@@ -33,7 +37,7 @@ public class KaldiServiceAppContext implements ServletContextListener {
 	public void contextDestroyed(ServletContextEvent sce) {
 
 		log.info("Stopping KaldiService ...");
-		taskHandler.stopService();
+		taskHandlerService.stopService();
 		log.info("KaldiService stopped");
 	}
 

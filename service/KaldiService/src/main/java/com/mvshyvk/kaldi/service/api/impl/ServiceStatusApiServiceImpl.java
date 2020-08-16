@@ -18,7 +18,7 @@ public class ServiceStatusApiServiceImpl extends ServiceStatusApiService {
 	@Override
 	public Response serviceStatusGet(SecurityContext securityContext) throws NotFoundException {
 		
-		ServiceStatus status = KaldiServiceAppContext.serviceStatusHandler.getServiceStatus();
+		ServiceStatus status = KaldiServiceAppContext.statusProvider.getServiceStatus();
 		log.debug(String.format("GET serviceStatus: %s", status.toString()));
 		
 		return Response.ok().entity(status).build();

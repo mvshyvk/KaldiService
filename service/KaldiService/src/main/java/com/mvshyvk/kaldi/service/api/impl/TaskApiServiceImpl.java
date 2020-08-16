@@ -32,7 +32,7 @@ public class TaskApiServiceImpl extends TaskApiService {
 			TaskId taskId = null;
 			try {
 				byte[] data = readData(inputStream);
-				taskId = KaldiServiceAppContext.taskHandler.postTask(data);
+				taskId = KaldiServiceAppContext.taskHandlerService.postTask(data);
 			} catch (ProcessingQueueFull e) {
 				
 				log.debug("Processing queue is full");
@@ -74,7 +74,7 @@ public class TaskApiServiceImpl extends TaskApiService {
 	@Override
 	public Response taskTaskIdStatusGet(String taskId, SecurityContext securityContext) throws NotFoundException {
 		
-		TaskStatus status = KaldiServiceAppContext.taskHandler.getTaskStatus(new TaskId().taskId(taskId));
+		TaskStatus status = KaldiServiceAppContext.taskHandlerService.getTaskStatus(new TaskId().taskId(taskId));
 		log.debug(String.format("Task %s status: %s", taskId, status));
 		
 		if (status == TaskStatus.enInQueue || status == TaskStatus.enInProgress) {
@@ -83,7 +83,7 @@ public class TaskApiServiceImpl extends TaskApiService {
 		}
 		else if (status == TaskStatus.enCompleted) {
 			
-			TaskData taskData = KaldiServiceAppContext.taskHandler.getTaskData(new TaskId().taskId(taskId));
+			TaskData taskData = KaldiServiceAppContext.taskHandlerService.getTaskData(new TaskId().taskId(taskId));
 			
 			Result result = new Result();
 			result.setStatus(StatusEnum.DONE);

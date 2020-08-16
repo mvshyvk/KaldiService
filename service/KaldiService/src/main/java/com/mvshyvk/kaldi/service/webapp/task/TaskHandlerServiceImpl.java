@@ -21,9 +21,9 @@ import com.mvshyvk.kaldi.service.webapp.kaldiConnector.KaldiSimulator;
  * for speech recognition
  *
  */
-public class TaskHandler {
+public class TaskHandlerServiceImpl implements TaskHandlerService, CapacitiesService {
 	
-	private static Logger log = Logger.getLogger(TaskHandler.class);
+	private static Logger log = Logger.getLogger(TaskHandlerServiceImpl.class);
 	
 	// TODO: Depth of processing queue is hard-coded at the moment
 	private final int queueCapacity = 8;
@@ -39,9 +39,9 @@ public class TaskHandler {
 	/**
 	 * Constructor
 	 */
-	public TaskHandler() {
+	public TaskHandlerServiceImpl() {
 		
-		log.info("Initializing TaskHandler ...");
+		log.info("Initializing TaskHandlerServiceImpl ...");
 		log.info("Queue capacity: " + queueCapacity);
 		
 		processingQueue = new ArrayBlockingQueue<TaskData>(queueCapacity);
@@ -71,6 +71,7 @@ public class TaskHandler {
 	 * @return identifier of the task added to queue
 	 * @throws ProcessingQueueFull - in case if queue is full
 	 */
+	@Override
 	public TaskId postTask(byte[] data) throws ProcessingQueueFull {
 		
 		TaskData task = new TaskData(data);
@@ -88,6 +89,7 @@ public class TaskHandler {
 	/**
 	 * Prepares service for shutting down webapp
 	 */
+	@Override
 	public void stopService() {
 		
 		executorService.shutdownNow();
@@ -98,14 +100,26 @@ public class TaskHandler {
 		}
 	}
 	
+	/**
+	 * Returns depth of processing queue
+	 */
+	@Override
 	public int getQueueCapacity() {
 		return queueCapacity;
 	}
 	
+	/**
+	 * Returns count of available slots in processing queue at the moment 
+	 */
+	@Override
 	public int getQueueAvailableCapacity() {
 		return processingQueue.remainingCapacity();
 	}
 	
+	/**
+	 * Returns count of processing workers
+	 */
+	@Override
 	public int getWorkersCount() {
 		return workersCount;
 	}
@@ -116,6 +130,7 @@ public class TaskHandler {
 	 * @param taskId identifier of task to retrieve status
 	 * @return status of task
 	 */
+	@Override
 	public TaskStatus getTaskStatus(TaskId taskId) {
 		
 		if (processingQueue.stream().anyMatch(item -> item.getTaskId().equals(taskId.getTaskId()))) {
@@ -133,6 +148,7 @@ public class TaskHandler {
 		return TaskStatus.enUnknown;		
 	}
 
+	@Override
 	public TaskData getTaskData(TaskId taskId) {		
 		return completedTasks.get(taskId.getTaskId());
 	}
