@@ -1,4 +1,4 @@
-package com.mvshyvk.kaldi.service.webapp.task;
+package com.mvshyvk.kaldi.service.webapp.model;
 
 /**
  * Possible task statuses

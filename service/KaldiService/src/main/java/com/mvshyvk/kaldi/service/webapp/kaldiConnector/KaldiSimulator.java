@@ -2,7 +2,8 @@ package com.mvshyvk.kaldi.service.webapp.kaldiConnector;
 
 
 import org.apache.log4j.Logger;
-import com.mvshyvk.kaldi.service.webapp.task.TaskData;
+
+import com.mvshyvk.kaldi.service.webapp.model.TaskData;
 
 /**
  * Simulator of task execution

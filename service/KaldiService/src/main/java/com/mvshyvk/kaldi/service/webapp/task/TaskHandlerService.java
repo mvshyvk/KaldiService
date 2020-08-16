@@ -2,6 +2,8 @@ package com.mvshyvk.kaldi.service.webapp.task;
 
 import com.mvshyvk.kaldi.service.models.TaskId;
 import com.mvshyvk.kaldi.service.webapp.exception.ProcessingQueueFull;
+import com.mvshyvk.kaldi.service.webapp.model.TaskData;
+import com.mvshyvk.kaldi.service.webapp.model.TaskStatus;
 
 /**
  * Interface for submitting tasks with data for processing and for retrieving processing results 

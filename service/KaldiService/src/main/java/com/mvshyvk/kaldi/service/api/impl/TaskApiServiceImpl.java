@@ -7,8 +7,8 @@ import com.mvshyvk.kaldi.service.models.Result.StatusEnum;
 import com.mvshyvk.kaldi.service.models.TaskId;
 import com.mvshyvk.kaldi.service.webapp.KaldiServiceAppContext;
 import com.mvshyvk.kaldi.service.webapp.exception.ProcessingQueueFull;
-import com.mvshyvk.kaldi.service.webapp.task.TaskData;
-import com.mvshyvk.kaldi.service.webapp.task.TaskStatus;
+import com.mvshyvk.kaldi.service.webapp.model.TaskData;
+import com.mvshyvk.kaldi.service.webapp.model.TaskStatus;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -14,6 +14,8 @@ import com.mvshyvk.kaldi.service.models.TaskId;
 import com.mvshyvk.kaldi.service.webapp.exception.ProcessingQueueFull;
 import com.mvshyvk.kaldi.service.webapp.kaldiConnector.KaldiConnector;
 import com.mvshyvk.kaldi.service.webapp.kaldiConnector.KaldiSimulator;
+import com.mvshyvk.kaldi.service.webapp.model.TaskData;
+import com.mvshyvk.kaldi.service.webapp.model.TaskStatus;
 
 // TODO: Extract interface and use interface
 /**
