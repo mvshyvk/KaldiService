@@ -9,6 +9,9 @@ import java.util.UUID;
 
 import com.mvshyvk.kaldi.service.models.Segment;
 
+/**
+ * Data model with data to process and results of processing 
+ */
 public class TaskData {
 	
 	private String taskId;
@@ -17,12 +20,22 @@ public class TaskData {
 	private String recognizedText;
 	private List<Segment> recognizedTextChunks;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param data - data for processing 
+	 */
 	public TaskData(byte[] data) {
 		
 		taskId = generateTaskId();
 		waveData = data;
 		
 		// TODO: Hard-coded values just for testing
+		generateFakeResults();
+	}
+
+	private void generateFakeResults() {
+		
 		recognizedText = "Some text";
 		recognizedTextChunks = new ArrayList<Segment>();
 		recognizedTextChunks.add(new Segment().segmentText("Some").timeStart(OffsetDateTime.now()).timeEnd(OffsetDateTime.now().plusSeconds(1)));

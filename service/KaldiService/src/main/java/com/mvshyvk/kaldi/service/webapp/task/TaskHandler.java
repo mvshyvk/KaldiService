@@ -8,13 +8,22 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
+
 import com.mvshyvk.kaldi.service.models.TaskId;
 import com.mvshyvk.kaldi.service.webapp.exception.ProcessingQueueFull;
 import com.mvshyvk.kaldi.service.webapp.kaldiConnector.KaldiConnector;
 import com.mvshyvk.kaldi.service.webapp.kaldiConnector.KaldiSimulator;
 
 // TODO: Extract interface and use interface
+/**
+ * Class that controls global capacities of KaldiService and handles all incoming tasks
+ * for speech recognition
+ *
+ */
 public class TaskHandler {
+	
+	private static Logger log = Logger.getLogger(TaskHandler.class);
 	
 	// TODO: Depth of processing queue is hard-coded at the moment
 	private final int queueCapacity = 8;
@@ -23,6 +32,7 @@ public class TaskHandler {
 	private Map<String, TaskData> inProgressTasks = new HashMap<String, TaskData>();
 	private BlockingQueue<TaskData> processingQueue;
 	
+	// Thread pool for running workers that execute tasks by passing them to Kaldi Connector 
 	private ExecutorService executorService; 
 	private int workersCount = 0;
 	
@@ -31,8 +41,10 @@ public class TaskHandler {
 	 */
 	public TaskHandler() {
 		
-		processingQueue = new ArrayBlockingQueue<TaskData>(queueCapacity);
+		log.info("Initializing TaskHandler ...");
+		log.info("Queue capacity: " + queueCapacity);
 		
+		processingQueue = new ArrayBlockingQueue<TaskData>(queueCapacity);
 		executorService = Executors.newCachedThreadPool();
 		addWorker();
 		addWorker();
@@ -40,11 +52,16 @@ public class TaskHandler {
 		// TODO: Need to consider correct shutdown of executorService during shutting down webapp
 	}
 
+	/**
+	 * Constructs worker and run it using thread pool 
+	 */
 	private void addWorker() {
 		
 		// TODO: Use factory 
 		executorService.submit(new TaskExecutor(new KaldiSimulator(), processingQueue));
 		workersCount++;
+		
+		log.info("Added worker. Current workers count: " + workersCount);
 	}
 
 	/**
@@ -57,8 +74,11 @@ public class TaskHandler {
 	public TaskId postTask(byte[] data) throws ProcessingQueueFull {
 		
 		TaskData task = new TaskData(data);
+		log.debug(String.format("Received data for processing. TaskId: %s, Size: %d", task.getTaskId(), data.length));
 		
 		if (processingQueue.offer(task)) {
+			
+			log.debug(String.format("Task %s submitted to the queue", task.getTaskId()));
 			return new TaskId().taskId(task.getTaskId());
 		}
 		
@@ -104,50 +124,71 @@ public class TaskHandler {
 		return completedTasks.get(taskId.getTaskId());
 	}
 	
-	
+	/**
+	 * Class implements worker that executes tasks by passing them to Kaldi Connector 
+	 */
 	class TaskExecutor implements Runnable
 	{
-		private final int waitingTimeout = 1;
+		private final int waitingTimeout = 1; // In seconds
 		
-		private KaldiConnector ipcConnector;
+		private KaldiConnector kaldiConnector;
 		private BlockingQueue<TaskData> tasksQueue;
 		
-		
-		public TaskExecutor(KaldiConnector ipcConnector, BlockingQueue<TaskData> queue) {
+		/**
+		 * Constructor 
+		 * 
+		 * @param kaldiConnector - Service that executes task consuming time of worker's thread 
+		 * but passing work to Kaldi Connector
+		 * @param queue - queue of tasks to process
+		 */
+		public TaskExecutor(KaldiConnector kaldiConnector, BlockingQueue<TaskData> queue) {
 			
-			this.ipcConnector = ipcConnector;
+			this.kaldiConnector = kaldiConnector;
 			this.tasksQueue = queue;
 		}
 
 		@Override
 		public void run() {
 			
+			log.debug("Worker started");
+			
 			while (!Thread.currentThread().isInterrupted()) {
 				try {
 					
 					TaskData task  = tasksQueue.poll(waitingTimeout, TimeUnit.SECONDS);
 					if (task != null) {
+						log.debug(String.format("Task %s was taken from the queue for processing", task.getTaskId()));
 						executeTask(task);
 					}
 				}
 				catch (InterruptedException e) {
-					
+
+					log.warn("Worker has interrupted", e);
 					Thread.currentThread().interrupt();
-					e.printStackTrace();
 				}
 			}
+			
+			log.debug("Worker stopped");
 		}
 
+		/**
+		 * Executes task in current thread
+		 * 
+		 * @param task - task to execute
+		 * @throws InterruptedException
+		 */
 		private void executeTask(TaskData task) throws InterruptedException {
 			
 			inProgressTasks.put(task.getTaskId(), task);
 			try {
-				ipcConnector.processSpeach(task);
+				kaldiConnector.processSpeach(task);
 			}
 			finally {
 				task.minimizeMemoryAllocation();
 				completedTasks.put(task.getTaskId(), task);
 				inProgressTasks.remove(task.getTaskId());
+				
+				log.debug(String.format("Task %s has been completed", task.getTaskId()));
 			}
 		}
 		
