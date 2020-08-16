@@ -84,6 +84,19 @@ public class TaskHandler {
 		
 		throw new ProcessingQueueFull("Task wasn't posted for processing because queue is full");				
 	}
+
+	/**
+	 * Prepares service for shutting down webapp
+	 */
+	public void stopService() {
+		
+		executorService.shutdownNow();
+		try {
+			executorService.awaitTermination(12, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			log.error("Error happened during stopping service", e);
+		}
+	}
 	
 	public int getQueueCapacity() {
 		return queueCapacity;
@@ -163,7 +176,7 @@ public class TaskHandler {
 				}
 				catch (InterruptedException e) {
 
-					log.warn("Worker has interrupted", e);
+					log.warn("Worker has interrupted");
 					Thread.currentThread().interrupt();
 				}
 			}

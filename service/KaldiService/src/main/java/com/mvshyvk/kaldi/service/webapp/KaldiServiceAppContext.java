@@ -33,6 +33,7 @@ public class KaldiServiceAppContext implements ServletContextListener {
 	public void contextDestroyed(ServletContextEvent sce) {
 
 		log.info("Stopping KaldiService ...");
+		taskHandler.stopService();
 		log.info("KaldiService stopped");
 	}
 
