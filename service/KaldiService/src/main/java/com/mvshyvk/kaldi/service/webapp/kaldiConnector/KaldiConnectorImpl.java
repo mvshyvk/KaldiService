@@ -10,7 +10,7 @@ public class KaldiConnectorImpl implements KaldiConnector {
 
 	@Override
 	public void processSpeach(TaskData taskData) throws InterruptedException {
-		// TODO Auto-generated method stub
+		// TODO: Implement Java -> Python communication
 	}
 
 }

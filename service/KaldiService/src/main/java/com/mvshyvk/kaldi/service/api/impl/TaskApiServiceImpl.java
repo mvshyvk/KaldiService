@@ -47,7 +47,6 @@ public class TaskApiServiceImpl extends TaskApiService {
 			return Response.accepted().entity(taskId).build();
 		}
 		
-		// TODO: Add BAD_REQUEST (400) to YAML and description
 		log.error("InputStream was not specified. Unable to read data");
 		return Response.status(Status.BAD_REQUEST).build();
 	}

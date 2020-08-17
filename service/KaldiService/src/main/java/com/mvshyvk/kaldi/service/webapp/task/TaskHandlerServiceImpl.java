@@ -11,13 +11,12 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 
 import com.mvshyvk.kaldi.service.models.TaskId;
+import com.mvshyvk.kaldi.service.webapp.KaldiServiceFactory;
 import com.mvshyvk.kaldi.service.webapp.exception.ProcessingQueueFull;
 import com.mvshyvk.kaldi.service.webapp.kaldiConnector.KaldiConnector;
-import com.mvshyvk.kaldi.service.webapp.kaldiConnector.KaldiSimulator;
 import com.mvshyvk.kaldi.service.webapp.model.TaskData;
 import com.mvshyvk.kaldi.service.webapp.model.TaskStatus;
 
-// TODO: Extract interface and use interface
 /**
  * Class that controls global capacities of KaldiService and handles all incoming tasks
  * for speech recognition
@@ -50,8 +49,6 @@ public class TaskHandlerServiceImpl implements TaskHandlerService, CapacitiesSer
 		executorService = Executors.newCachedThreadPool();
 		addWorker();
 		addWorker();
-		
-		// TODO: Need to consider correct shutdown of executorService during shutting down webapp
 	}
 
 	/**
@@ -59,8 +56,7 @@ public class TaskHandlerServiceImpl implements TaskHandlerService, CapacitiesSer
 	 */
 	private void addWorker() {
 		
-		// TODO: Use factory 
-		executorService.submit(new TaskExecutor(new KaldiSimulator(), processingQueue));
+		executorService.submit(new TaskExecutor(KaldiServiceFactory.createKaldiConnectorSimulator(), processingQueue));
 		workersCount++;
 		
 		log.info("Added worker. Current workers count: " + workersCount);

@@ -1,13 +1,10 @@
 package com.mvshyvk.kaldi.service.webapp.model;
 
-import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
-import java.util.UUID;
-
 import com.mvshyvk.kaldi.service.models.Segment;
+import com.mvshyvk.kaldi.service.webapp.utils.TaskIdGenerator;
 
 /**
  * Data model with data to process and results of processing 
@@ -27,7 +24,7 @@ public class TaskData {
 	 */
 	public TaskData(byte[] data) {
 		
-		taskId = generateTaskId();
+		taskId = TaskIdGenerator.generateTaskId();
 		waveData = data;
 		
 		// TODO: Hard-coded values just for testing
@@ -60,29 +57,6 @@ public class TaskData {
 
 	public void minimizeMemoryAllocation() {
 		waveData = null;
-	}
-
-	// TODO: Extract as a utility class 
-	private static String generateTaskId() {
-		
-		UUID uuid = UUID.randomUUID();
-		String taskId = uuidToBase64(uuid).substring(0, 22);
-		return makeURLSafe(taskId);		
-	}
-	
-	private static String makeURLSafe(String b64Id) {		
-		return b64Id
-				.replace('=', 'e')
-				.replace('+', 'p')
-				.replace('/', 's');		
-	}
-
-	private static String uuidToBase64(UUID uuid) {
-		
-		ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
-		bb.putLong(uuid.getMostSignificantBits());
-		bb.putLong(uuid.getLeastSignificantBits());
-		return Base64.getEncoder().encodeToString(bb.array());
 	}
 
 }
