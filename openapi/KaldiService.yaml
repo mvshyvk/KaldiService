@@ -48,6 +48,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TaskId'
+        "400":
+          description: Bad request parameters
         "401":
           description: Unauthorized
         "429":
