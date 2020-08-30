@@ -27,3 +27,20 @@ RUN mkdir speech_recognition
 WORKDIR speech_recognition
 RUN echo "cat motd" >> /root/.bashrc
 COPY . ./
+
+RUN apt-get install maven tomcat8 --yes
+RUN echo $(/usr/bin/env java -XshowSettings:properties -version 2>&1 | grep "java.home" | sed -e 's/java.home\s*=//;s/ //g;') > /tmp/JAVA_HOME
+ENV CATALINA_HOME /usr/share/tomcat8
+ENV CATALINA_BASE /speech_recognition/service/tomcat
+RUN rm -r $CATALINA_BASE
+RUN mkdir $CATALINA_BASE
+RUN mkdir $CATALINA_BASE/temp
+RUN mkdir $CATALINA_BASE/logs
+RUN mkdir $CATALINA_BASE/conf
+RUN mkdir $CATALINA_BASE/webapps
+WORKDIR  /speech_recognition/service/KaldiService
+RUN export JAVA_HOME=$(cat /tmp/JAVA_HOME); mvn compile war:war
+RUN cp /etc/tomcat8/server.xml $CATALINA_BASE/conf
+RUN cp /speech_recognition/service/KaldiService/target/KaldiService.war $CATALINA_BASE/webapps
+WORKDIR /speech_recognition
+CMD export JAVA_HOME=$(cat /tmp/JAVA_HOME); $CATALINA_HOME/bin/startup.sh; /bin/bash
