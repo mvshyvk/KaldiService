@@ -92,14 +92,6 @@ def start_pipeline(wav):
     except:
         terminate_pipeline(True, "Не удалось сериализировать результат распознавания '{}'".format(wav_name))
         return
-        
-    if IS_DELETE_WAV:
-        LOGGER.info("Запуск удаления файла '{}'".format(wav_name))
-        try:
-            os.remove(wav)
-        except:
-            LOGGER.error("Не удалось удалить файл '{}'".format(wav_name))
-        LOGGER.info("Завершение удаления файла '{}'".format(wav_name))
 
     terminate_pipeline(False, None)
 
@@ -117,7 +109,6 @@ if __name__ == '__main__':
     parser.add_argument('-sc', '--segm_conf', help='Путь к .CONF конфигурационному файлу сегментации')
     parser.add_argument('-sp', '--segm_post', help='Путь к .VEC файлу апостериорных вероятностей сегментации')
     parser.add_argument('-p', '--processes', default=None, type=int, help='Количество процессов для обработки файлов')
-    parser.add_argument('-l', '--log', dest='log', action='store_true', help='Логировать результат распознавания')
     parser.add_argument('-dw', '--delete_wav', dest='delete_wav', action='store_true', help='Удалять .WAV файлы после распознавания')
 
     args = parser.parse_args()
@@ -133,8 +124,7 @@ if __name__ == '__main__':
     SEGM_CONF = args.segm_conf or 'model/conf/mfcc_hires.conf'
     SEGM_POST = args.segm_post or 'model/conf/post_output.vec'
     PROCESSES = args.processes or cpu_count()
-    IS_LOG = args.log
-    IS_DELETE_WAV = args.delete_wav
+    IS_LOG = true
     
     wavs = glob.glob(str(WAV_FILE))
     
@@ -143,7 +133,7 @@ if __name__ == '__main__':
    
     if IS_LOG:
         try:
-            log_name = str(LOG_DIR / str(time.strftime('%Y%m%d-%H%M%S') + '.log'))
+            log_name = str(LOG_DIR / 'recognition.log'))
             LOGGER = create_logger('logger', 'file', logging.DEBUG, log_name)
         except:
             raise Exception("Не удалось создать лог-файл")
