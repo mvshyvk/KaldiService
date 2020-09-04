@@ -85,10 +85,17 @@ public class TaskApiServiceImpl extends TaskApiService {
 			TaskData taskData = KaldiServiceAppContext.taskHandlerService.getTaskData(new TaskId().taskId(taskId));
 			
 			Result result = new Result();
-			result.setStatus(StatusEnum.DONE);
 			result.setTaskId(taskId);
-			result.setText(taskData.getText());
-			result.setTextChunks(taskData.getTextChunks());
+			
+			if (taskData.getError() == null) {
+				result.setStatus(StatusEnum.DONE);
+				result.setText(taskData.getText());
+				result.setTextChunks(taskData.getTextChunks());
+			}
+			else {
+				result.setStatus(StatusEnum.CANCELED);
+				result.setText(taskData.getError().getMessage());
+			}
 			
 			log.debug(String.format("Task %s results: %s", taskId, result));
 			return Response.ok().entity(result).build();

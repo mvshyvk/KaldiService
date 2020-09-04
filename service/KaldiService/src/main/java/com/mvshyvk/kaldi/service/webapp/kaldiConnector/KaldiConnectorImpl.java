@@ -25,71 +25,57 @@ import com.mvshyvk.kaldi.service.webapp.model.TaskData;
 
 /**
  * Class that implements inter-process communication with Python scripts which perform 
- * speach recognition 
+ * speech recognition 
  */
 public class KaldiConnectorImpl implements KaldiConnector {
 	
 	private static Logger log = Logger.getLogger(KaldiConnectorImpl.class);
 
+	/**
+	 *  Processes speech represented in TaskData
+	 * @param taskData - task with information for processing
+	 * @throws InterruptedException
+	 */
 	@Override
 	public void processSpeach(TaskData taskData) throws InterruptedException {
 		
-		// TODO: read and store log/diagnostic data
 		Path taskFolder = createTaskFolder(taskData);
 		
 		try {
 			
+			// Saving Wave to file 
 			File waveFile = Paths.get(taskFolder.toString(), getWaveFileName(taskData)).toFile();
-			
+
 			try {
 				Files.write(taskData.getWaveData(), waveFile);
 			} 
 			catch (IOException e) {
-				
+
 				log.error("Error happened during writing to wave file " + waveFile.getPath(), e);
-				setTaskErrorStatus(taskData, e);
+				taskData.setError(e);
 				return;
 			}
 			
+			// Processing Wave file
 			try {
-				
-				Process recognitionProcess = Runtime.getRuntime().exec(new String[] {
-					"python", "/speech_recognition/recognition_task.py", waveFile.getPath(), taskFolder.toString()});
-				
-				try (InputStream inputStream = recognitionProcess.getErrorStream()) {
-					
-					String processOutput = new BufferedReader(new InputStreamReader(inputStream))
-							  .lines().collect(Collectors.joining("\n"));
-					log.debug(processOutput);
-				}
-
-				int returnCode = recognitionProcess.waitFor();
-				
-				if (returnCode != 0) {
-					log.info(String.format(
-							"Recognition process returned code %d when processing %s file", returnCode, waveFile.getPath()));
-					return;
-				}
-				
-				File resultsFile = Paths.get(taskFolder.toString(), "result.json").toFile();
-				readResults(resultsFile, taskData);
+				processWaveFile(taskFolder, waveFile, taskData);
 			} 
 			catch (JsonParseException | JsonMappingException e) {
-				
+
 				log.error("Error happend during deserializing recognition results", e);
-				setTaskErrorStatus(taskData, e);
+				taskData.setError(e);
 				return;
 			}
 			catch (IOException e) {
 
 				log.error("Error during speech recognition ", e);
-				setTaskErrorStatus(taskData, e);
+				taskData.setError(e);
 				return;
 			}
 		}
 		finally {
+			// Cleanup of working temporary folder 
 			try {
-
 				FileUtils.deleteDirectory(taskFolder.toFile());
 			}
 			catch (IOException e) {
@@ -98,6 +84,65 @@ public class KaldiConnectorImpl implements KaldiConnector {
 		}
 	}
 
+	/**
+	 * Processes wave file performing speech recognition
+	 * 
+	 * @param taskFolder - working folder for temporary files and storing results
+	 * @param waveFile - wave file to process
+	 * @param taskData - task to store results
+	 * 
+	 * @throws IOException, InterruptedException, JsonParseException, JsonMappingException  
+	 */
+	private void processWaveFile(Path taskFolder, File waveFile, TaskData taskData)
+			throws IOException, InterruptedException, JsonParseException, JsonMappingException {
+		
+		// Running script for speech recognition
+		log.info(String.format("Processing task %s, file: %s", taskData.getTaskId(), waveFile.getPath()));
+		
+		Process recognitionProcess = Runtime.getRuntime().exec(new String[] {
+			"python", "/speech_recognition/recognition_task.py", waveFile.getPath(), taskFolder.toString()});
+		
+		// Collecting script output
+		String recognitionOutput = getScriptOutput(recognitionProcess);
+		log.debug(recognitionOutput);
+
+		// Waiting process termination
+		int returnCode = recognitionProcess.waitFor();
+		
+		if (returnCode != 0) {
+			log.info(String.format(
+					"Recognition process returned code %d when processing %s file", returnCode, waveFile.getPath()));
+			return;
+		}
+		
+		File resultsFile = Paths.get(taskFolder.toString(), "result.json").toFile();
+		readResults(resultsFile, taskData);
+	}
+
+	/**
+	 * Captures and returns script output
+	 *  
+	 * @param recognitionProcess - process to capture output
+	 * @return captured output
+	 * @throws IOException
+	 */
+	private String getScriptOutput(Process recognitionProcess) throws IOException {
+		
+		try (InputStream inputStream = recognitionProcess.getErrorStream()) {
+			
+			return new BufferedReader(new InputStreamReader(inputStream))
+					  .lines()
+					  .collect(Collectors.joining("\n"));
+		}
+	}
+
+	/**
+	 * Reads JSON file with results of speech recognition 
+	 * 
+	 * @param resultsFile - file to read
+	 * @param taskData - task object to store results
+	 * @throws JsonParseException, JsonMappingException, IOException
+	 */
 	private void readResults(File resultsFile, TaskData taskData) throws JsonParseException, JsonMappingException, IOException {
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -113,9 +158,17 @@ public class KaldiConnectorImpl implements KaldiConnector {
 		}
 	}
 
+	/**
+	 * Stores speech recognition results at task object
+	 * 
+	 * @param result - speech recognition results
+	 * @param taskData - task object to store results
+	 */
 	private void passRecognitionResults(List<SegmentItem> result, TaskData taskData) {
 		
-		StringBuilder strBuilder = new StringBuilder(); 
+		StringBuilder strBuilder = new StringBuilder();
+		Boolean first = true;
+		
 		for (SegmentItem segment : result) {
 			
 			taskData.getTextChunks().add(new Segment()
@@ -123,17 +176,23 @@ public class KaldiConnectorImpl implements KaldiConnector {
 					.timeStart(segment.getStart())
 					.timeEnd(segment.getEnd()));
 			
+			if (!first) {
+				strBuilder.append("; ");
+			}
+			first = false;
+			
 			strBuilder.append(segment.getText());
-			strBuilder.append(", ");
 		}
 		
 		taskData.setText(strBuilder.toString());
 	}
 
-	private void setTaskErrorStatus(TaskData taskData, IOException e) {
-		// TODO: Needs to be implemented
-	}
-
+	/**
+	 * Creates temporary folder for performing task
+	 * 
+	 * @param taskData -  task to perform
+	 * @return path to created folder
+	 */
 	private Path createTaskFolder(TaskData taskData) {
 		
 		Path folder = Paths.get(getTempFolder(), taskData.getTaskId());
@@ -141,10 +200,16 @@ public class KaldiConnectorImpl implements KaldiConnector {
 		return folder;
 	}
 
+	/**
+	 * Returns path to temporary folder
+	 */
 	private String getTempFolder() {
 		return System.getProperty("catalina.base") + "/temp";
 	}
-	
+
+	/**
+	 * Generates name of Wave file
+	 */
 	private String getWaveFileName(TaskData taskData) {
 		return taskData.getTaskId().substring(0, 5) + ".wav";
 	}

@@ -15,6 +15,7 @@ public class TaskData {
 	
 	private String recognizedText;
 	private List<Segment> recognizedTextChunks = new ArrayList<Segment>();
+	private Exception error;
 	
 	/**
 	 * Constructor
@@ -49,6 +50,14 @@ public class TaskData {
 
 	public void minimizeMemoryAllocation() {
 		waveData = null;
+	}
+	
+	public Exception getError() {
+		return error;
+	}
+	
+	public void setError(Exception error) {
+		this.error = error;
 	}
 
 }

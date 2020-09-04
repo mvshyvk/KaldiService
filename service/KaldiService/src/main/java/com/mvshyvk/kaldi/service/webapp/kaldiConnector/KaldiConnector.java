@@ -7,5 +7,10 @@ import com.mvshyvk.kaldi.service.webapp.model.TaskData;
  */
 public interface KaldiConnector {
 	
+	/**
+	 *  Processes speech represented in TaskData
+	 * @param taskData - task with information for processing
+	 * @throws InterruptedException
+	 */
 	void processSpeach(TaskData taskData) throws InterruptedException;
 }
