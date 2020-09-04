@@ -88,7 +88,7 @@ def start_pipeline(wav):
         return
     try:
         readCSV = pandas.read_csv(CSV)
-        readCSV.to_json(str(OUTPUT_DIR / 'result.json'))
+        readCSV.to_json(str(OUTPUT_DIR / 'result.json'), orient="records")
     except:
         terminate_pipeline(True, "Не удалось сериализировать результат распознавания '{}'".format(wav_name))
         return
@@ -124,16 +124,16 @@ if __name__ == '__main__':
     SEGM_CONF = args.segm_conf or 'model/conf/mfcc_hires.conf'
     SEGM_POST = args.segm_post or 'model/conf/post_output.vec'
     PROCESSES = args.processes or cpu_count()
-    IS_LOG = true
+    IS_LOG = 'yes'
     
     wavs = glob.glob(str(WAV_FILE))
     
-    prep = data_preparator.DataPreparator(args.wav, str(OUTPUT_DIR), args.log)
+    prep = data_preparator.DataPreparator(args.wav, str(OUTPUT_DIR), IS_LOG)
     LOG_DIR, TEMP_DIR, ASS_DIR, ERROR_DIR = prep.create_directories()
    
     if IS_LOG:
         try:
-            log_name = str(LOG_DIR / 'recognition.log'))
+            log_name = str(LOG_DIR / 'recognition.log')
             LOGGER = create_logger('logger', 'file', logging.DEBUG, log_name)
         except:
             raise Exception("Не удалось создать лог-файл")
@@ -144,7 +144,7 @@ if __name__ == '__main__':
         CSV = str(OUTPUT_DIR / str('transcriptions_' + time.strftime('%Y%m%d-%H%M%S') + '.csv'))
         with open(CSV, 'w') as f:
             writer = csv.writer(f)
-            writer.writerow(['Audio File', 'Start', 'End', 'Name', 'Text'])
+            writer.writerow(['AudioFile', 'Start', 'End', 'Name', 'Text'])
     except:
         raise Exception("Не удалось создать результирующий .CSV-файл")
 
