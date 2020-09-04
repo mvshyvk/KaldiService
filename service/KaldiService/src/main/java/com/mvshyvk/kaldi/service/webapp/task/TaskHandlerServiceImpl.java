@@ -26,8 +26,7 @@ public class TaskHandlerServiceImpl implements TaskHandlerService, CapacitiesSer
 	
 	private static Logger log = Logger.getLogger(TaskHandlerServiceImpl.class);
 	
-	// TODO: Depth of processing queue is hard-coded at the moment
-	private final int queueCapacity = 8;
+	private int queueCapacity;
 	
 	private Map<String, TaskData> completedTasks = new HashMap<String, TaskData>();
 	private Map<String, TaskData> inProgressTasks = new HashMap<String, TaskData>();
@@ -45,10 +44,13 @@ public class TaskHandlerServiceImpl implements TaskHandlerService, CapacitiesSer
 		log.info("Initializing TaskHandlerServiceImpl ...");
 		log.info("Queue capacity: " + queueCapacity);
 		
+		int workersToBe = (Runtime.getRuntime().availableProcessors() + 1) / 2 + 1;
+		queueCapacity = workersToBe * 2; 
+
 		processingQueue = new ArrayBlockingQueue<TaskData>(queueCapacity);
 		executorService = Executors.newCachedThreadPool();
 		
-		for (int i = 0; i < Runtime.getRuntime().availableProcessors(); ++i) {
+		for (int i = 0; i < workersToBe; ++i) {
 			addWorker();
 		}
 	}
@@ -58,7 +60,7 @@ public class TaskHandlerServiceImpl implements TaskHandlerService, CapacitiesSer
 	 */
 	private void addWorker() {
 		
-		executorService.submit(new TaskExecutor(KaldiServiceFactory.createKaldiConnectorSimulator(), processingQueue));
+		executorService.submit(new TaskExecutor(KaldiServiceFactory.createKaldiConnector(), processingQueue));
 		workersCount++;
 		
 		log.info("Added worker. Current workers count: " + workersCount);
@@ -105,7 +107,7 @@ public class TaskHandlerServiceImpl implements TaskHandlerService, CapacitiesSer
 	 */
 	@Override
 	public int getQueueCapacity() {
-		return queueCapacity;
+		return queueCapacity + workersCount;
 	}
 	
 	/**
@@ -113,7 +115,7 @@ public class TaskHandlerServiceImpl implements TaskHandlerService, CapacitiesSer
 	 */
 	@Override
 	public int getQueueAvailableCapacity() {
-		return processingQueue.remainingCapacity();
+		return processingQueue.remainingCapacity() + workersCount - inProgressTasks.size();
 	}
 	
 	/**

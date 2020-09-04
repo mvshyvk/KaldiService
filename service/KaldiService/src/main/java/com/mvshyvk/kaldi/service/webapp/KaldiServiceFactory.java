@@ -2,6 +2,7 @@ package com.mvshyvk.kaldi.service.webapp;
 
 import com.mvshyvk.kaldi.service.webapp.kaldiConnector.KaldiConnector;
 import com.mvshyvk.kaldi.service.webapp.kaldiConnector.KaldiConnectorImpl;
+import com.mvshyvk.kaldi.service.webapp.kaldiConnector.KaldiSimulator;
 import com.mvshyvk.kaldi.service.webapp.status.ServiceStatusProvider;
 import com.mvshyvk.kaldi.service.webapp.status.ServiceStatusProviderImpl;
 import com.mvshyvk.kaldi.service.webapp.task.CapacitiesService;
@@ -34,11 +35,19 @@ public  class KaldiServiceFactory {
 	}
 	
 	/**
+	 * Creates service that communicates with python script for performing speech recognition 
+	 */
+	public static KaldiConnector createKaldiConnector() {
+		
+		return new KaldiConnectorImpl();
+	}
+	
+	/**
 	 * Creates simulator of KaldiConnector service interface 
 	 */
 	public static KaldiConnector createKaldiConnectorSimulator() {
 		
-		return new KaldiConnectorImpl();
+		return new KaldiSimulator();
 	}
 	
 	/** 

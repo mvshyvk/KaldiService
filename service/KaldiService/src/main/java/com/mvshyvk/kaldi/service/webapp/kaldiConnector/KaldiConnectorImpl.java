@@ -124,7 +124,7 @@ public class KaldiConnectorImpl implements KaldiConnector {
 					.timeEnd(segment.getEnd()));
 			
 			strBuilder.append(segment.getText());
-			strBuilder.append("\n");
+			strBuilder.append(", ");
 		}
 		
 		taskData.setText(strBuilder.toString());
