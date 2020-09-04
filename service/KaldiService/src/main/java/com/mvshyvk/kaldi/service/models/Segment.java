@@ -15,7 +15,6 @@ package com.mvshyvk.kaldi.service.models;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.OffsetDateTime;
 import javax.validation.constraints.*;
 
 /**
@@ -24,15 +23,15 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-04-23T21:31:33.644Z[GMT]")
 public class Segment {
 	@JsonProperty("timeStart")
-	private OffsetDateTime timeStart = null;
+	private int timeStart = 0; // in milliseconds
 
 	@JsonProperty("timeEnd")
-	private OffsetDateTime timeEnd = null;
+	private int timeEnd = 0; // in milliseconds
 
 	@JsonProperty("segmentText")
 	private String segmentText = null;
 
-	public Segment timeStart(OffsetDateTime timeStart) {
+	public Segment timeStart(int timeStart) {
 		this.timeStart = timeStart;
 		return this;
 	}
@@ -43,17 +42,17 @@ public class Segment {
 	 * @return timeStart
 	 **/
 	@JsonProperty("timeStart")
-	@Schema(example = "2020-03-21T15:01:08+02:00", required = true, description = "")
+	@Schema(example = "21642", required = true, description = "")
 	@NotNull
-	public OffsetDateTime getTimeStart() {
+	public int getTimeStart() {
 		return timeStart;
 	}
 
-	public void setTimeStart(OffsetDateTime timeStart) {
+	public void setTimeStart(int timeStart) {
 		this.timeStart = timeStart;
 	}
 
-	public Segment timeEnd(OffsetDateTime timeEnd) {
+	public Segment timeEnd(int timeEnd) {
 		this.timeEnd = timeEnd;
 		return this;
 	}
@@ -64,12 +63,12 @@ public class Segment {
 	 * @return timeEnd
 	 **/
 	@JsonProperty("timeEnd")
-	@Schema(example = "2020-03-21T15:01:12+02:00", description = "")
-	public OffsetDateTime getTimeEnd() {
+	@Schema(example = "36374", description = "")
+	public int getTimeEnd() {
 		return timeEnd;
 	}
 
-	public void setTimeEnd(OffsetDateTime timeEnd) {
+	public void setTimeEnd(int timeEnd) {
 		this.timeEnd = timeEnd;
 	}
 
