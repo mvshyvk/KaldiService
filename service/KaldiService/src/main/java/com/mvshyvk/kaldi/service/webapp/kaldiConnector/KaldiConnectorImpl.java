@@ -110,8 +110,12 @@ public class KaldiConnectorImpl implements KaldiConnector {
 		int returnCode = recognitionProcess.waitFor();
 		
 		if (returnCode != 0) {
-			log.info(String.format(
+			
+			Exception error = new Exception(String.format(
 					"Recognition process returned code %d when processing %s file", returnCode, waveFile.getPath()));
+			log.error(error);
+			log.error("Script output: " + recognitionOutput);
+			taskData.setError(error);
 			return;
 		}
 		
