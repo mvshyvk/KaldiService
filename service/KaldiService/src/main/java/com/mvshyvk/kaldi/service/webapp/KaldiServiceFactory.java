@@ -1,7 +1,7 @@
 package com.mvshyvk.kaldi.service.webapp;
 
 import com.mvshyvk.kaldi.service.webapp.kaldiConnector.KaldiConnector;
-import com.mvshyvk.kaldi.service.webapp.kaldiConnector.KaldiSimulator;
+import com.mvshyvk.kaldi.service.webapp.kaldiConnector.KaldiConnectorImpl;
 import com.mvshyvk.kaldi.service.webapp.status.ServiceStatusProvider;
 import com.mvshyvk.kaldi.service.webapp.status.ServiceStatusProviderImpl;
 import com.mvshyvk.kaldi.service.webapp.task.CapacitiesService;
@@ -38,7 +38,7 @@ public  class KaldiServiceFactory {
 	 */
 	public static KaldiConnector createKaldiConnectorSimulator() {
 		
-		return new KaldiSimulator();
+		return new KaldiConnectorImpl();
 	}
 	
 	/** 

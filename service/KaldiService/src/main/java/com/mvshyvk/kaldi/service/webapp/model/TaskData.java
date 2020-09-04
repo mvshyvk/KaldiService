@@ -1,6 +1,5 @@
 package com.mvshyvk.kaldi.service.webapp.model;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import com.mvshyvk.kaldi.service.models.Segment;
@@ -15,7 +14,7 @@ public class TaskData {
 	private byte[] waveData;
 	
 	private String recognizedText;
-	private List<Segment> recognizedTextChunks;
+	private List<Segment> recognizedTextChunks = new ArrayList<Segment>();
 	
 	/**
 	 * Constructor
@@ -26,17 +25,6 @@ public class TaskData {
 		
 		taskId = TaskIdGenerator.generateTaskId();
 		waveData = data;
-		
-		// TODO: Hard-coded values just for testing
-		generateFakeResults();
-	}
-
-	private void generateFakeResults() {
-		
-		recognizedText = "Some text";
-		recognizedTextChunks = new ArrayList<Segment>();
-		recognizedTextChunks.add(new Segment().segmentText("Some").timeStart(OffsetDateTime.now()).timeEnd(OffsetDateTime.now().plusSeconds(1)));
-		recognizedTextChunks.add(new Segment().segmentText("text").timeStart(OffsetDateTime.now().plusSeconds(1)).timeEnd(OffsetDateTime.now().plusSeconds(2)));
 	}
 	
 	public String getTaskId() {
@@ -49,6 +37,10 @@ public class TaskData {
 
 	public String getText() {
 		return recognizedText;
+	}
+	
+	public void setText(String text) {
+		recognizedText = text;
 	}
 
 	public List<Segment> getTextChunks() {

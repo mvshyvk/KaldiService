@@ -47,8 +47,10 @@ public class TaskHandlerServiceImpl implements TaskHandlerService, CapacitiesSer
 		
 		processingQueue = new ArrayBlockingQueue<TaskData>(queueCapacity);
 		executorService = Executors.newCachedThreadPool();
-		addWorker();
-		addWorker();
+		
+		for (int i = 0; i < Runtime.getRuntime().availableProcessors(); ++i) {
+			addWorker();
+		}
 	}
 
 	/**
