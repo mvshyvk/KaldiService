@@ -55,4 +55,4 @@ http://alphacephei.com/kaldi/kaldi-ru-0.6.tar.gz
 
 ## OpenAPI specification
 
-Take a look at "./openapi/KaldiService.yaml"
+https://app.swaggerhub.com/apis-docs/mvshyvk/Kaldi_Speech_Recognition/0.9.0
