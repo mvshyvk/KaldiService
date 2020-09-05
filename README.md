@@ -9,11 +9,12 @@ Models for other languages recognition may be easily added in case of need.
 
 1. Pull repo
 
-`$ git clone https://github.com/mvshyvk/Speech_Recognizer.git`
+`$ git clone https://github.com/mvshyvk/KaldiService.git`
 
 2. Build Docker container
 
-`$ docker build -t KaldiService:1.0 ./`
+`$ cd KaldiService`
+`$ docker build -t kaldi_service:1.0 ./`
 
 3. Launch Docker container
 

@@ -11,7 +11,7 @@ RUN apt-get install -y llvm-8 ffmpeg
 RUN LLVM_CONFIG=/usr/bin/llvm-config-8 pip3 install enum34 llvmlite numba
 
 # Deploying Maven & Tomcat
-RUN apt-get install maven tomcat8 --yes
+RUN apt-get install openjdk-8-jdk maven tomcat8 --yes
 
 # Setting up environment variables for Maven & Tomcat
 RUN echo $(/usr/bin/env java -XshowSettings:properties -version 2>&1 | grep "java.home" | sed -e 's/java.home\s*=//;s/ //g;') > /tmp/JAVA_HOME
