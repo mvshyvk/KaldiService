@@ -23,7 +23,7 @@ Models for other languages recognition may be easily added in case of need.
 
 Файлы проекта расположены в директории /speech_recognition:
 
-* **recognition_task.py ** - script for recognition of a single audio file;
+* **recognition_task.py** - script for recognition of a single audio file;
 * **/tools** - набор инструментов для распознавания:
     * **data_preparator.py** - скрипт подготовки данных для распознавания;
     * **recognizer.py** - скрипт распознавания речи;
@@ -45,13 +45,13 @@ http://alphacephei.com/kaldi/kaldi-ru-0.6.tar.gz
 ## Usage
 ### Install Postman
 
-### Import "./service/Tests/SpeachRecognizer Tests.postman_collection.json" to postmat
+### Import "./service/Tests/SpeachRecognizer Tests.postman_collection.json" to postman
 
 ### Use REST interface for speech recognition
 
-Use "Add new task" endpoint for submitting audio files
-Use "Get service status" for retrieving service status information
-Use "Get task status" for getting speech recognition results
+* Use "Add new task" endpoint for submitting audio files
+* Use "Get service status" for retrieving service status information
+* Use "Get task status" for getting speech recognition results
 
 ## OpenAPI specification
 
