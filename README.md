@@ -1,75 +1,36 @@
-# Speech-to-Text (Russian)
+# Kaldi Speech-to-Text REST Service
 
-<p align="center">
-<img src="web/static/images/logo.jpg" width="800">
-</p>
+Service for easy access to speech recognition capabilities of Kaldi using REST interface.
+Simple deployment and usage in couple clicks with Docker containers.
+Currently supports Russian. 
+Models for other languages recognition may be easily added in case of need.
 
-Проект для распознавания речи на русском языке на основе pykaldi.
+## Deployment and launching
 
-## Установка
-### Самостоятельная (Linux)
+1. Pull repo
 
-1. Установить kaldi:
+`$ git clone https://github.com/mvshyvk/Speech_Recognizer.git`
 
-https://kaldi-asr.org/doc/tutorial_setup.html
+2. Build Docker container
 
-2. Установить необходимые Python-библиотеки:
+`$ docker build -t KaldiService:1.0 ./`
 
-`$ pip install -r requirements.txt`
+3. Launch Docker container
 
-3. Установить pykaldi:
-
-* С помощью conda (с поддержкой GPU):
-
-`$ conda install -c pykaldi pykaldi`
-
-* С помощью conda (без поддержки GPU):
-
-`$ conda install -c pykaldi pykaldi-cpu`
-
-* Собрать из исходников (раздел From Source):
-
-https://github.com/pykaldi/pykaldi
-
-4. Добавить в PATH пути к компонентам kaldi:
-
-`$ PATH /kaldi/src/featbin:/kaldi/src/ivectorbin:/kaldi/src/online2bin:/kaldi/src/rnnlmbin:/kaldi/src/fstbin:$PATH`
-
-5. Склонировать репозиторий проекта:
-
-`$ git clone https://github.com/SergeyShk/Speech-to-Text-Russian.git`
-
-### Docker
-
-1. Собрать docker-образ:
-
-`$ docker build -t speech_recognition:latest .`
-
-Или
-
-`$ docker pull docker.pkg.github.com/sergeyshk/speech-to-text-russian/stt-ru:0.1.0`
-
-2. Создать docker-том для работы с внешними данными:
-
-`$ docker volume create -d local -o o=bind -o device=[DIR] asr_volume`
-
-3. Запустить docker-контейнер:
-
-`$ docker run -it --rm -p 9000:9000 -p 5000:5000 -v asr_volume:/archive speech_recognition`
+`$ docker run -it --rm -p 8080:8080 KaldiService:1.0`
 
 ## Структура проекта
 
 Файлы проекта расположены в директории /speech_recognition:
 
-* **start_recognition.py** - скрипт запуска процедуры распознавания;
+* **recognition_task.py ** - script for recognition of a single audio file;
 * **/tools** - набор инструментов для распознавания:
     * **data_preparator.py** - скрипт подготовки данных для распознавания;
     * **recognizer.py** - скрипт распознавания речи;
     * **segmenter.py** - скрипт сегментации речи;
     * **transcriptins_parser.py** - скрипт парсинга результатов распознавания;
 * **/model** - набор файлов для модели распознавания;
-* **/web** - веб-приложение с демо-стендом распознавания речи;
-* **/examples** - набор ноутбуков с примерами работы инструментов.
+* **/examples** - audio files with examples for testing purpose.
 
 ## Модель
 
@@ -81,83 +42,17 @@ http://alphacephei.com/kaldi/kaldi-ru-0.6.tar.gz
 
 > **Внимание!** Размер файла HCLG.fst составляет более 500МБ, поэтому для корректного клонирования репозитория необходимо установить на свой компьютер GitHub LFS. Также можно скачать данный файл вручную с соответствующей страницы проекта.
 
-## Запуск
-### Распознавание речи
+## Usage
+### Install Postman
 
-1. Подготовить директорию для размещения WAV-файлов;
-2. Для запуска процедуры распознавания речи выполнить команду:
+### Import "./service/Tests/SpeachRecognizer Tests.postman_collection.json" to postmat
 
-`$ ./start_recognition.py /archive/wav /archive/output -dw -l`
+### Use REST interface for speech recognition
 
-3. Для запуска режима мониторинга директории выполнить команду:
+Use "Add new task" endpoint for submitting audio files
+Use "Get service status" for retrieving service status information
+Use "Get task status" for getting speech recognition results
 
-`$ ./start_recognition.py /archive/wav /archive/output -l -t 60 -d 1`
+## OpenAPI specification
 
-Описание параметров запуска доступно по команде:
-
-`$ ./start_recognition.py -h`
-
-```console
-usage: start_recognition.py [-h] [-rm REC_MODEL] [-rg REC_GRAPH]
-                            [-rw REC_WORDS] [-rc REC_CONF] [-ri REC_ICONF]
-                            [-sm SEGM_MODEL] [-sc SEGM_CONF] [-sp SEGM_POST]
-                            [-p PROCESSES] [-l] [-dw] [-t TIME] [-d DELTA]
-                            WAV OUT
-
-Запуск процедуры распознавания речи
-
-positional arguments:
-  WAV                   Путь к .WAV файлам аудио
-  OUT                   Путь к директории с результатами распознавания
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -rm REC_MODEL, --rec_model REC_MODEL
-                        Путь к .MDL файлу модели распознавания
-  -rg REC_GRAPH, --rec_graph REC_GRAPH
-                        Путь к .FST файлу общего графа распознавания
-  -rw REC_WORDS, --rec_words REC_WORDS
-                        Путь к .TXT файлу текстового корпуса
-  -rc REC_CONF, --rec_conf REC_CONF
-                        Путь к .CONF конфигурационному файлу распознавания
-  -ri REC_ICONF, --rec_iconf REC_ICONF
-                        Путь к .CONF конфигурационному файлу векторного
-                        экстрактора
-  -sm SEGM_MODEL, --segm_model SEGM_MODEL
-                        Путь к .RAW файлу модели сегментации
-  -sc SEGM_CONF, --segm_conf SEGM_CONF
-                        Путь к .CONF конфигурационному файлу сегментации
-  -sp SEGM_POST, --segm_post SEGM_POST
-                        Путь к .VEC файлу апостериорных вероятностей
-                        сегментации
-  -p PROCESSES, --processes PROCESSES
-                        Количество процессов для обработки файлов
-  -l, --log             Логировать результат распознавания
-  -dw, --delete_wav     Удалять .WAV файлы после распознавания
-  -t TIME, --time TIME  Пауза перед очередным сканированием директории в
-                        секундах
-  -d DELTA, --delta DELTA
-                        Дельта, выдерживаемая до чтения файла в минутах
-```
-
-### Демонстрационный стенд
-
-1. Запустить веб-сервер:
-
-`$ cd web`
-
-`$ ./app.py`
-
-2. Перейти по адресу:
-
-`http://0.0.0.0:5000`
-
-### Сервис ноутбуков
-
-1. Запустить сервис:
-
-`$ jupyter notebook --no-browser --ip=0.0.0.0 --port=9000 --allow-root`
-
-2. Перейти по адресу:
-
-`http://0.0.0.0:9000`
+Take a look at "./openapi/KaldiService.yaml"
