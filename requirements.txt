@@ -6,3 +6,4 @@ librosa
 sox
 pysubs2
 flask
+soundfile
