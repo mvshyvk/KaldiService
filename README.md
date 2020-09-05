@@ -13,12 +13,12 @@ Models for other languages recognition may be easily added in case of need.
 
 2. Build Docker container
 
-`$ cd KaldiService`
+`$ cd KaldiService`<BR>
 `$ docker build -t kaldi_service:1.0 ./`
 
 3. Launch Docker container
 
-`$ docker run -it --rm -p 8080:8080 KaldiService:1.0`
+`$ docker run -it --rm -p 8080:8080 kaldi_service:1.0`
 
 ## Структура проекта
 
