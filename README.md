@@ -14,18 +14,16 @@ Installed:
 * Git LFS 
 * Docker
 
-### Steps
-
-####1. Pull repo
+###1. Pull repo
 
 `$ git clone https://github.com/mvshyvk/KaldiService.git`
 
-####2. Build Docker container
+###2. Build Docker container
 
 `$ cd KaldiService`<BR>
 `$ docker build -t kaldi_service:1.0 ./`
 
-####3. Launch Docker container
+###3. Launch Docker container
 
 `$ docker run -it --rm -p 8080:8080 kaldi_service:1.0`
 
@@ -60,8 +58,24 @@ http://alphacephei.com/kaldi/kaldi-ru-0.6.tar.gz
 ### Use REST interface for speech recognition
 
 * Use "Add new task" endpoint for submitting audio files
+<p align="center">
+<img src="service/Tests/images/PostAudioFile.png">
+</p>
+
+Receive task id
+<p align="center">
+<img src="service/Tests/images/TaskIdResponse.png">
+</p>
+
 * Use "Get service status" for retrieving service status information
+<p align="center">
+<img src="service/Tests/images/ServiceStatus.png">
+</p>
+
 * Use "Get task status" for getting speech recognition results
+<p align="center">
+<img src="service/Tests/images/RecognitionResults.png ">
+</p>
 
 ## OpenAPI specification
 
