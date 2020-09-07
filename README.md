@@ -56,7 +56,7 @@ For using another acoustic model it should be placed to ./model folder replacing
 ## Usage
 ### Install Postman
 
-### Import https://github.com/mvshyvk/KaldiService/blob/master/service/Tests/SpeachRecognizer%20Tests.postman_collection.json to postman
+### Import [https://github.com/mvshyvk/KaldiService/blob/master/service/Tests/SpeachRecognizer%20Tests.postman_collection.json|/service/Tests/SpeachRecognizer Tests.postman_collection.json] to postman
 
 ### Use REST interface for speech recognition
 
@@ -86,7 +86,7 @@ https://app.swaggerhub.com/apis-docs/mvshyvk/Kaldi_Speech_Recognition/0.9.0
 
 ## Next plans (TODO)
 
-### Implement oauth authentication
-### Implement websocket server connection that allows clients to receive notification about task completion without need to poll /task/{taskId}/status endpoint.
-### Implement support of multiple language models and possibility to switch between them
+* Implement oauth authentication
+* Implement websocket server connection that allows clients to receive notification about task completion without need to poll /task/{taskId}/status endpoint.
+* Implement support of multiple language models and possibility to switch between them
 
