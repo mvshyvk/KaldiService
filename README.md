@@ -3,57 +3,60 @@
 Service for easy access to speech recognition capabilities of Kaldi using REST interface.
 Simple deployment and usage in couple clicks with Docker containers.
 Currently supports Russian. 
-Models for other languages recognition may be easily added in case of need.
+Models for other languages may be easily added in case of need.
 
 ## Deployment and launching
 
 ### Prerequsites
 
-Installed:
+Install:
 * Git 
 * Git LFS 
 * Docker
 
 ### 1. Pull repo
 
-`$ git clone https://github.com/mvshyvk/KaldiService.git`
+`git clone https://github.com/mvshyvk/KaldiService.git`
 
 ### 2. Build Docker container
 
-`$ cd KaldiService`<BR>
-`$ docker build -t kaldi_service:1.0 ./`
+`cd KaldiService`<BR>
+`docker build -t kaldi_service:1.0 ./`
 
 ### 3. Launch Docker container
 
-`$ docker run -it --rm -p 8080:8080 kaldi_service:1.0`
+`docker run -it --rm -p 8080:8080 kaldi_service:1.0`
 
-## Структура проекта
+## Project structure
 
-Файлы проекта расположены в директории /speech_recognition:
-
-* **recognition_task.py** - script for recognition of a single audio file;
-* **/tools** - набор инструментов для распознавания:
-    * **data_preparator.py** - скрипт подготовки данных для распознавания;
-    * **recognizer.py** - скрипт распознавания речи;
-    * **segmenter.py** - скрипт сегментации речи;
-    * **transcriptins_parser.py** - скрипт парсинга результатов распознавания;
-* **/model** - набор файлов для модели распознавания;
+Project files are put to /speech_recognition folder:
+* **service/KaldiService** - Java web application that provides REST API to speech recognition capabilities of Kaldi 
+* **service/Tests** - Postman REST collection for testing KaldiService API 
+* **service/tomcat** - Tomcat default folder where will be put deployed KaldiService web application, it's log and temporary files
+* **openapi/KaldiService.yaml** - Open API specification of KaldiService REST API
+* **recognition_task.py** - Python script for recognition of a single audio file;
+* **/tools** - set of tools for speech recognition:
+    * **data_preparator.py** - script for data preparation before speech recognition;
+    * **recognizer.py** - script for performing speech recognition;
+    * **segmenter.py** - script for speech segmentation;
+    * **transcriptins_parser.py** - script for results parsing;
+* **/model** - set of files of speech recognition model;
 * **/examples** - audio files with examples for testing purpose.
 
-## Модель
+## Speech recognition model
 
-В качестве акустической и языковой модели используется русскоязычная модель от alphacep:
+As an acoustic model is used speech recognition model provided by alphacep
 
 http://alphacephei.com/kaldi/kaldi-ru-0.6.tar.gz
 
-При необходимости использования собственной модели, необходимо заменить соответствующие файлы в директории /model.
+For using another acoustic model it should be placed to ./model folder replacing existing files.
 
-> **Внимание!** Размер файла HCLG.fst составляет более 500МБ, поэтому для корректного клонирования репозитория необходимо установить на свой компьютер GitHub LFS. Также можно скачать данный файл вручную с соответствующей страницы проекта.
+> **Attention!** Size of HCLG.fst file is more than 500 Mb so Git LFS must be installed first in order to clone git repo correctly.
 
 ## Usage
 ### Install Postman
 
-### Import "./service/Tests/SpeachRecognizer Tests.postman_collection.json" to postman
+### Import <a src="service/Tests/SpeachRecognizer%20Tests.postman_collection.json">./service/Tests/SpeachRecognizer Tests.postman_collection.json</a> to postman
 
 ### Use REST interface for speech recognition
 
