@@ -56,7 +56,7 @@ For using another acoustic model it should be placed to ./model folder replacing
 ## Usage
 ### Install Postman
 
-### Import [https://github.com/mvshyvk/KaldiService/blob/master/service/Tests/SpeachRecognizer%20Tests.postman_collection.json|/service/Tests/SpeachRecognizer Tests.postman_collection.json] to postman
+### Import [/service/Tests/SpeachRecognizer Tests.postman_collection.json](https://github.com/mvshyvk/KaldiService/blob/master/service/Tests/SpeachRecognizer%20Tests.postman_collection.json) to postman
 
 ### Use REST interface for speech recognition
 
