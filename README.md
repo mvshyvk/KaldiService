@@ -7,7 +7,7 @@ Models for other languages may be easily added in case of need.
 
 ## Deployment and launching
 
-### Prerequsites
+### Preconditions
 
 Install:
 * Git 
