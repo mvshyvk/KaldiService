@@ -53,7 +53,30 @@ For using another acoustic model it should be placed to ./model folder replacing
 
 > **Attention!** Size of HCLG.fst file is more than 500 Mb so Git LFS must be installed first in order to clone git repo correctly.
 
-## Usage
+## Usage with console client application
+### Pull in SpeechRecognitionTest console client application: https://github.com/mvshyvk/SpeechRecognitionTest
+`git clone https://github.com/mvshyvk/SpeechRecognitionTest.git`
+
+### Build it
+
+Windows:  
+* install vcpkg package manager
+* install cpprestsdk library using vcpkg
+* open SpeechRecognitionTest folder in Visual Studio 2019
+* setup path to CMake toolchain file in CMakeSettings.json (vcpkg/scripts/buildsystems/vcpkg.cmake)
+* build project
+
+Linux:
+`cd SpeechRecognitionTest`
+`sudo apt-get install libcpprest-dev`
+`cmake .`
+`make`
+
+### Run application
+
+`./speechRecognitionTest http://localhost:8080 example.mp3`
+
+## Usage with Postman
 ### Install Postman
 
 ### Import [/service/Tests/SpeachRecognizer Tests.postman_collection.json](https://github.com/mvshyvk/KaldiService/blob/master/service/Tests/SpeachRecognizer%20Tests.postman_collection.json) to postman
