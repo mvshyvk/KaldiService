@@ -78,7 +78,7 @@ Linux:
 
 Example of output:
 <p align="center">
-<img src="service/Tests/images/ConsoleApplicationOutput.png.png ">
+<img src="service/Tests/images/ConsoleApplicationOutput.png">
 </p>
 
 ## Usage with Postman
@@ -105,7 +105,7 @@ Receive task id
 
 * Use "Get task status" for getting speech recognition results
 <p align="center">
-<img src="service/Tests/images/RecognitionResults.png ">
+<img src="service/Tests/images/RecognitionResults.png">
 </p>
 
 ## OpenAPI specification
