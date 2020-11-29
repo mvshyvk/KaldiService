@@ -67,14 +67,17 @@ Windows:
 * build project
 
 Linux:
-`cd SpeechRecognitionTest`
-`sudo apt-get install libcpprest-dev`
-`cmake .`
-`make`
+* `cd SpeechRecognitionTest`
+* `sudo apt-get install libcpprest-dev`
+* `cmake .`
+* `make`
 
 ### Run application
 
 `./speechRecognitionTest http://localhost:8080 example.mp3`
+
+Example of output:
+
 
 ## Usage with Postman
 ### Install Postman
