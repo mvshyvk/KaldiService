@@ -77,7 +77,9 @@ Linux:
 `./speechRecognitionTest http://localhost:8080 example.mp3`
 
 Example of output:
-
+<p align="center">
+<img src="service/Tests/images/ConsoleApplicationOutput.png.png ">
+</p>
 
 ## Usage with Postman
 ### Install Postman
