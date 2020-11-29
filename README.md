@@ -77,7 +77,9 @@ Linux:
 `./speechRecognitionTest http://localhost:8080 example.mp3`
 
 Example of output:
-
+<p align="center">
+<img src="service/Tests/images/ConsoleApplicationOutput.png">
+</p>
 
 ## Usage with Postman
 ### Install Postman
@@ -103,7 +105,7 @@ Receive task id
 
 * Use "Get task status" for getting speech recognition results
 <p align="center">
-<img src="service/Tests/images/RecognitionResults.png ">
+<img src="service/Tests/images/RecognitionResults.png">
 </p>
 
 ## OpenAPI specification
