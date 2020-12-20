@@ -117,4 +117,5 @@ https://app.swaggerhub.com/apis-docs/mvshyvk/Kaldi_Speech_Recognition/0.9.0
 * Implement oauth authentication
 * Implement websocket server connection that allows clients to receive notification about task completion without need to poll /task/{taskId}/status endpoint.
 * Implement support of multiple language models and possibility to switch between them
+* Replace intermediate layer between Kaldi and Segmentator: PyKaldi recognition (recognizer.py; NnetLatticeFasterRecognizer) by VOSK library recognition.
 
